@@ -5,7 +5,7 @@
 #修改immortalwrt.lan关联IP
 sed -i "s/192\.168\.[0-9]*\.[0-9]*/$WRT_IP/g" $(find ./feeds/luci/modules/luci-mod-system/ -type f -name "flash.js")
 #添加编译日期标识
-sed -i "s/(\(luciversion || ''\))/(\1) + (' \/ $WRT_CI-$WRT_DATE')/g" $(find ./feeds/luci/modules/luci-mod-status/ -type f -name "10_system.js")
+sed -i "s/(\(luciversion || ''\))/(\1) + (' \/ $WRT_MARK-$WRT_DATE')/g" $(find ./feeds/luci/modules/luci-mod-status/ -type f -name "10_system.js")
 
 WIFI_FILE="./package/mtk/applications/mtwifi-cfg/files/mtwifi.sh"
 #修改WIFI名称
@@ -26,29 +26,17 @@ echo "CONFIG_PACKAGE_luci=y" >> ./.config
 echo "CONFIG_LUCI_LANG_zh_Hans=y" >> ./.config
 echo "CONFIG_PACKAGE_luci-theme-$WRT_THEME=y" >> ./.config
 echo "CONFIG_PACKAGE_luci-app-$WRT_THEME-config=y" >> ./.config
-echo "CONFIG_MTK_MEMORY_SHRINK=$([[ $WRT_ADJUST == "true" ]] && echo "y" || echo "n")" >> ./.config
-echo "CONFIG_MTK_MEMORY_SHRINK_AGGRESS=$([[ $WRT_ADJUST == "true" ]] && echo "y" || echo "n")" >> ./.config
+echo "CONFIG_TARGET_OPTIONS=y" >> ./.config
+echo "CONFIG_TARGET_OPTIMIZATION=\"-O2 -pipe -march=armv8-a+crypto+crc -mcpu=cortex-a53+crypto+crc -mtune=cortex-a53\"" >> ./.config
 
 #手动调整的插件
 if [ -n "$WRT_PACKAGE" ]; then
-	echo "$WRT_PACKAGE" >> ./.config
+	echo -e "$WRT_PACKAGE" >> ./.config
 fi
 
-#23.05专用
-if [[ $WRT_BRANCH == *"23.05"* ]]; then
-	sed -i '/luci-app-upnp/d' ./.config
-	sed -i '/miniupnpd/d' ./.config
-
-	echo "CONFIG_PACKAGE_luci-app-upnp=n" >> ./.config
-	echo "CONFIG_PACKAGE_miniupnpd=n" >> ./.config
-
-	echo "CONFIG_PACKAGE_luci-app-homeproxy=y" >> ./.config
-	echo "CONFIG_PACKAGE_luci-app-mihomo=y" >> ./.config
-	echo "CONFIG_PACKAGE_luci-app-upnp-mtk-adjust=y" >> ./.config
-fi
-
-#编译器优化
-if [[ $WRT_TARGET != *"X86"* ]]; then
-	echo "CONFIG_TARGET_OPTIONS=y" >> ./.config
-	echo "CONFIG_TARGET_OPTIMIZATION=\"-O2 -pipe -march=armv8-a+crypto+crc -mcpu=cortex-a53+crypto+crc -mtune=cortex-a53\"" >> ./.config
-fi
+#调整mtk系列配置
+sed -i '/MEMORY_SHRINK/d' ./.config
+sed -i '/luci-app-mtk/d' ./.config
+sed -i '/wifi-profile/d' ./.config
+echo "CONFIG_PACKAGE_luci-app-mtk=n" >> ./.config
+echo "CONFIG_PACKAGE_wifi-profile=n" >> ./.config
