@@ -47,7 +47,7 @@ jobs:
       fail-fast: false
       max-parallel: 4
       matrix:
-        CONFIG: [MT7981, MT7986]
+        CONFIG: [MT7981]
         REPO_INFO:
           #- {SOURCE: hanwckf/immortalwrt-mt798x, BRANCH: openwrt-21.02}
           #- {SOURCE: padavanonly/immortalwrt-mt798x, BRANCH: openwrt-21.02}
@@ -63,9 +63,9 @@ jobs:
       #默认主题
       WRT_THEME: bootstrap
       #默认主机名
-      WRT_NAME: WRT
+      WRT_NAME: Wrt
       #默认WIFI名称
-      WRT_SSID: WRT
+      WRT_SSID: Wrt
       #默认WIFI密码
       WRT_WORD: 12345678
       #默认地址
