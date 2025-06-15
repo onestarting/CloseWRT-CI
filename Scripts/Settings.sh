@@ -26,8 +26,6 @@ echo "CONFIG_PACKAGE_luci=y" >> ./.config
 echo "CONFIG_LUCI_LANG_zh_Hans=y" >> ./.config
 echo "CONFIG_PACKAGE_luci-theme-$WRT_THEME=y" >> ./.config
 echo "CONFIG_PACKAGE_luci-app-$WRT_THEME-config=y" >> ./.config
-echo "CONFIG_TARGET_OPTIONS=y" >> ./.config
-echo "CONFIG_TARGET_OPTIMIZATION=\"-O2 -pipe -march=armv8-a+crypto+crc -mcpu=cortex-a53+crypto+crc -mtune=cortex-a53\"" >> ./.config
 
 #手动调整的插件
 if [ -n "$WRT_PACKAGE" ]; then
@@ -35,8 +33,11 @@ if [ -n "$WRT_PACKAGE" ]; then
 fi
 
 #调整mtk系列配置
-sed -i '/MEMORY_SHRINK/d' ./.config
+sed -i '/TARGET.*mediatek/d' ./.config
+sed -i '/TARGET_MULTI_PROFILE/d' ./.config
+sed -i '/TARGET_PER_DEVICE_ROOTFS/d' ./.config
+sed -i '/luci-app-eqos/d' ./.config
 sed -i '/luci-app-mtk/d' ./.config
+sed -i '/luci-app-upnp/d' ./.config
+sed -i '/luci-app-wol/d' ./.config
 sed -i '/wifi-profile/d' ./.config
-echo "CONFIG_PACKAGE_luci-app-mtk=n" >> ./.config
-echo "CONFIG_PACKAGE_wifi-profile=n" >> ./.config
