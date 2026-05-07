@@ -1,4 +1,6 @@
 #!/bin/bash
+# SPDX-License-Identifier: MIT
+# Copyright (C) 2026 VIKINGYFY
 
 #安装和更新软件包
 UPDATE_PACKAGE() {
@@ -88,3 +90,10 @@ UPDATE_VERSION() {
 }
 
 #UPDATE_VERSION "软件包名" "测试版，true，可选，默认为否"
+#UPDATE_VERSION "sing-box"
+#UPDATE_VERSION "tailscale"
+
+#引入私有扩展脚本
+if [ -f "$GITHUB_WORKSPACE/Scripts/PRIVATE.sh" ]; then
+	source "$GITHUB_WORKSPACE/Scripts/PRIVATE.sh"
+fi
