@@ -30,19 +30,20 @@ echo "CONFIG_PACKAGE_luci=y" >> ./.config
 echo "CONFIG_LUCI_LANG_zh_Hans=y" >> ./.config
 echo "CONFIG_PACKAGE_luci-theme-$WRT_THEME=y" >> ./.config
 echo "CONFIG_PACKAGE_luci-app-$WRT_THEME-config=y" >> ./.config
-
+echo "0000000000000000000000000000000000"
 #引入私有扩展配置
 if [ -f "$GITHUB_WORKSPACE/Config/PRIVATE.txt" ]; then
 	echo "Applying private configurations from PRIVATE.txt..."
 	cat $GITHUB_WORKSPACE/Config/PRIVATE.txt >> ./.config
 fi
-
+echo "111111111111111111111"
 #手动调整的插件
 if [ -n "$WRT_PACKAGE" ]; then
 	echo -e "$WRT_PACKAGE" >> ./.config
 fi
-
+echo "2222222222222222222222222222222"
 #无WIFI配置标志
 if [[ "${WRT_CONFIG,,}" == *"wifi"* && "${WRT_CONFIG,,}" == *"no"* ]]; then
 	echo "WRT_WIFI=wifi-no" >> $GITHUB_ENV
 fi
+echo "333333333333333333333333333333333"
